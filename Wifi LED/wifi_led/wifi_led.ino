@@ -1,3 +1,5 @@
+#include <Arduino.h>
+
 #include <ESP8266WiFi.h>
 #include <ArduinoJson.h>
 #include<Adafruit_NeoPixel.h>
@@ -5,7 +7,7 @@
 // Note that LOW turns the LED is on; this is because it is active LOW
 
 // Set LED ring
-#define PIN D4
+#define PIN D1
 uint16_t j = 0; // determine colour of LEDs
 Adafruit_NeoPixel ring = Adafruit_NeoPixel(16, PIN, NEO_GRB + NEO_KHZ800);
 
