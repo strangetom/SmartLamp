@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+  <html>
+    <head>
+      <title>ESP8266 Server</title>
+      <meta name='viewport' content='width=device-width, initial-scale=1'>
+      <style type='text/css'>html{background-color:#fff;}body{margin:0 auto;max-width:50em;line-height:1.5;padding:2em 1em;border:40px solid #fff;border-radius:45px;background:#F0F0F0;color:#566b78;font-family:sans-serif;-moz-font-smoothing:grayscale;-webkit-font-smoothing:antialiased}h1,strong{color:#333;font-weight:500}a{color:#e81c4f}</style>
+    </head>
+    <body>
+    <center><h1>ESP8266 LED LAMP CONTROL</h1></center>
+    <p> Put the lamp in <a href=\"rainbow\">rainbow</a> mode, or</p>
+    <p> put the lamp in <a href=\"warm\">warm</a> mode, or</p>
+    <p> put the lamp in <a href=\"cold\">cold</a> mode, or maybe try</p>
+    <p> <form id='static' action='rgb' method='post' oninput=\"rgb.value = Red.value+' '+Green.value+' '+Blue.value\">
+      <a onclick=\"document.getElementById('static').submit();\" style='cursor: pointer;text-decoration: underline;'>static</a> mode:
+      R <input type='text' name='R' size='1' value='255'>
+      G <input type='text' name='G' size='1' value='255'> 
+      B <input type='text' name='B' size='1' value='255'> 
+      <output name='rgb'> </output>
+    </form> </p>
+    <p> Finally, we can turn the lamp <a href=\"off\">off.</a> </p>
+    </body>
+  </html>
+

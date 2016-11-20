@@ -1,0 +1,27 @@
+html {
+    background-color: #fff;
+}
+
+body {
+    margin: 0 auto;
+    max-width: 50em;
+    line-height: 1.5;
+    padding: 2em 1em;
+    border: 40px solid #fff;
+    border-radius: 45px;
+    background: #F0F0F0;
+    color: #566b78;
+    font-family: sans-serif;
+    -moz-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased
+}
+
+h1,
+strong {
+    color: #333;
+    font-weight: 500
+}
+
+a {
+    color: #e81c4f
+}

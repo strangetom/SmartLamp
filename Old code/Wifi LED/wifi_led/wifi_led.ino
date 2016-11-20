@@ -11,8 +11,9 @@
 uint16_t j = 0; // determine colour of LEDs
 Adafruit_NeoPixel ring = Adafruit_NeoPixel(16, PIN, NEO_GRB + NEO_KHZ800);
 
-char ssid[] = "ssid";        
-char pass[] = "pass";   
+
+const char* ssid = "ssid";
+const char* pass = "pass";     
 
 int status = WL_IDLE_STATUS;
 IPAddress server(192, 168, 0, 104);
