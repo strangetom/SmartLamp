@@ -10,14 +10,11 @@
     <p> Put the lamp in <a href=\"rainbow\">rainbow</a> mode, or</p>
     <p> put the lamp in <a href=\"warm\">warm</a> mode, or</p>
     <p> put the lamp in <a href=\"cold\">cold</a> mode, or maybe try</p>
-    <p> <form id='static' action='rgb' method='post' oninput=\"rgb.value = Red.value+' '+Green.value+' '+Blue.value\">
-      <a onclick=\"document.getElementById('static').submit();\" style='cursor: pointer;text-decoration: underline;'>static</a> mode:
-      R <input type='text' name='R' size='1' value='255'>
-      G <input type='text' name='G' size='1' value='255'> 
-      B <input type='text' name='B' size='1' value='255'> 
-      <output name='rgb'> </output>
+    <p> 
+    <p> <form id='static' action='colour' method='post'>
+      static mode:
+      <input type='color' name='colour' value='#3d34b9' style='width:30%' onchange="document.getElementById('static').submit();">
     </form> </p>
     <p> Finally, we can turn the lamp <a href=\"off\">off.</a> </p>
     </body>
   </html>
-
