@@ -162,16 +162,20 @@ String buildWebpage(String hexColour){
     </head>\
     <body>\
     <center><h1>ESP8266 LED LAMP CONTROL</h1></center>\
-    <p> Put the lamp in <a href=\"rainbow\">rainbow</a> mode, or</p>\
-    <p> put the lamp in <a href=\"warm\">warm</a> mode, or</p>\
-    <p> put the lamp in <a href=\"cold\">cold</a> mode, or maybe try</p>\
-    <p> <form id='static' action='colour' method='post'>\
-      static mode:\
-      <input type='color' name='colour' value='";
+    <b>There are a few different modes for the lamp.</b>\
+    <ul>\
+      <li> <a href=\"rainbow\">Rainbow mode</a>, the lamp will cycle through all colours of the rainbow.</li>\
+      <li> <a href=\"warm\">Warm mode</a>, the lamp will cycle yellow, red, purple and back again.</li>\
+      <li> <a href=\"cold\">Cold mode</a>, the lamp will cycle green, blue, purple and back again.</li>\
+      <li> <form id='static' action='colour' method='post'>\
+        Static mode:\
+        <input type='color' name='colour' value='";
    webPage += hexColour;
-   webPage += "' style='width:30%' onchange=\"document.getElementById('static').submit();\">\
-    </form> </p>\
-    <p> Finally, we can turn the lamp <a href=\"off\">off.</a> </p>\
+   webPage += "' style='width:15%' onchange=\"document.getElementById('static').submit();\">\
+       , the lamp will have a single colour.\
+      </form> </li>\
+      <li> Or finally, we can turn the lamp <a href=\"off\">off.</a> </li>\
+    </ul>\
     </body>\
   </html>";
   return webPage;
