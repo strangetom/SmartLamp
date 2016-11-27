@@ -39,39 +39,39 @@ void setup() {
   
   // Functions for lamp settings
   server.on("/", [](){
-      server.send(200, "text/html", buildWebpage(hexColour));
+      server.send(200, "text/html", buildWebpage(hexColour, lampMode));
     });
 
   server.on("/rainbow", [](){
-    server.send(200, "text/html", buildWebpage(hexColour));
     lampMode = "rainbow";
+    server.send(200, "text/html", buildWebpage(hexColour, lampMode));
   });
 
   server.on("/warm", [](){
-    server.send(200, "text/html", buildWebpage(hexColour));
     lampMode = "warm";
+    server.send(200, "text/html", buildWebpage(hexColour, lampMode));
   });
 
   server.on("/cold", [](){
-    server.send(200, "text/html", buildWebpage(hexColour));
     lampMode = "cold";
+    server.send(200, "text/html", buildWebpage(hexColour, lampMode));
   });
 
   server.on("/off", [](){
-    server.send(200, "text/html", buildWebpage(hexColour));
     lampMode = "off";
+    server.send(200, "text/html", buildWebpage(hexColour, lampMode));
   });
 
   server.on("/colour", [](){
     hexColour = server.arg(0);
-    server.send(200, "text/html", buildWebpage(hexColour));;
+    lampMode = "static";
+    server.send(200, "text/html", buildWebpage(hexColour, lampMode));;
 
     // Convert the hex number to rgb values
     int number = (int)strtol( &hexColour[1], NULL, 16);
     red = number >> 16;
     green = number >> 8 & 0xFF;
     blue = number & 0xFF;
-    lampMode = "static";
   });
 
   server.begin();
@@ -151,18 +151,21 @@ void loop() {
 }
 
 // Build webpage with correct colour for colour picker
-String buildWebpage(String hexColour){
+String buildWebpage(String hexColour, char* lampMode){
   String webPage = "";
   webPage += "<!DOCTYPE html>\
   <html>\
     <head>\
-      <title>ESP8266 Server</title>\
+      <title>ESP8266 Lamp</title>\
       <meta name='viewport' content='width=device-width, initial-scale=1'>\
       <style type='text/css'>html{background-color:#fff;}body{margin:0 auto;max-width:50em;line-height:1.5;padding:2em 1em;border:40px solid #fff;border-radius:45px;background:#F0F0F0;color:#566b78;font-family:sans-serif;-moz-font-smoothing:grayscale;-webkit-font-smoothing:antialiased}h1,strong{color:#333;font-weight:500}a{color:#e81c4f}</style>\
     </head>\
     <body>\
     <center><h1>ESP8266 LED LAMP CONTROL</h1></center>\
-    <b>There are a few different modes for the lamp.</b>\
+    <p><b>The lamp is currently <a>";
+  webPage += lampMode;    
+  webPage += "</a>.</b></p>\
+    There are a few different modes for the lamp.\
     <ul>\
       <li> <a href=\"rainbow\">Rainbow mode</a>, the lamp will cycle through all colours of the rainbow.</li>\
       <li> <a href=\"warm\">Warm mode</a>, the lamp will cycle yellow, red, purple and back again.</li>\
