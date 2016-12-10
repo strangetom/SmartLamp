@@ -1,25 +1,27 @@
 #include <Arduino.h>
 
+// These libraries are required for the webserver
 #include <ESP8266WiFi.h>
 #include <ESP8266WebServer.h>
-#include<Adafruit_NeoPixel.h>
+// This library is used to control the NeoPixel ring
+#include <Adafruit_NeoPixel.h>
 
-// Note that LOW turns the LED is on; this is because it is active LOW
 
-// Set LED ring
+// Set up the LED ring
 #define PIN D1
-uint16_t j = 0; // determine colour of LEDs
 Adafruit_NeoPixel ring = Adafruit_NeoPixel(16, PIN, NEO_GRB + NEO_KHZ800);
-// Colours for static mode
-uint8_t red, green, blue;
-String hexColour = "#3d34b9";
+// Set up variables for setting the colour
+uint16_t j = 0; // counter for iterating through cycle
+uint8_t red, green, blue; // hold the rgb values for a static colour
+String hexColour = "#3d34b9"; // hex representation of static colour sent by http
+char* lampMode = "rainbow"; // mode the lamp is in
 
+// Set up webserver and connect to wifi
 const char* ssid = "ssid";
 const char* pass = "pass";  
 int status = WL_IDLE_STATUS;
 ESP8266WebServer server(80);
 
-char* lampMode = "rainbow";
 
 void setup() {
   // Initialise serial for debugging
@@ -74,6 +76,7 @@ void setup() {
     blue = number & 0xFF;
   });
 
+  // Begin websever
   server.begin();
   Serial.println("HTTP server started");
   
@@ -83,74 +86,68 @@ void setup() {
 }
 
 void loop() {
+  // When client connects, serve requested webpage
   server.handleClient();
   
-  // Change LED
-  if (strcmp(lampMode, "rainbow") == 0){
-   
+  // Set lamp colour according to counter variable and mode
+  if (strcmp(lampMode, "rainbow") == 0){ // rainbow mode
     for(uint16_t i=0; i<ring.numPixels(); i++) {
       ring.setPixelColor(i, Wheel(j));
     }
     ring.show();
-    if(j == 255){
-      j = 0;
-    }else{
-      j++;
-    }
+
     Serial.println("LED rainbow: "  + String(j));
     
-  } else if (strcmp(lampMode, "static") == 0){
+  } else if (strcmp(lampMode, "static") == 0){ //static mode
     for(uint16_t i=0; i<ring.numPixels(); i++) {
       ring.setPixelColor(i, ring.Color(red, green, blue));
     }
     ring.show(); 
-    if(j == 255){
-      j = 0;
-    }else{
-      j++;
-    }      
+    
     Serial.println("LED static: "  + String(j));
     
-  } else if (strcmp(lampMode, "warm") == 0){
-    
+  } else if (strcmp(lampMode, "warm") == 0){ // warm mode
     for(uint16_t i=0; i<ring.numPixels(); i++) {
       ring.setPixelColor(i, warmWheel(j));
     }
     ring.show();
-    if(j == 255){
-      j = 0;
-    }else{
-      j++;
-    }    
+  
     Serial.println("LED warm: "  + String(j));
     
-  } else if (strcmp(lampMode, "cold") == 0){
-    
+  } else if (strcmp(lampMode, "cold") == 0){ // cold mode
     for(uint16_t i=0; i<ring.numPixels(); i++) {
       ring.setPixelColor(i, coldWheel(j));
     }
     ring.show();
-    if(j == 255){
-      j = 0;
-    }else{
-      j++;
-    }  
+
     Serial.println("LED cold: "  + String(j));
     
-  } else if (strcmp(lampMode, "off") == 0){
-    LEDs_off();
-    Serial.println("LED off");
+  } else if (strcmp(lampMode, "off") == 0){ // off mode
+    for(uint16_t i=0; i<ring.numPixels(); i++){
+      ring.setPixelColor(i, ring.Color(0, 0, 0));
+    }
+    ring.show(); 
+
+    Serial.println("LED off: " + String(j));
     
-  } else {
+  } else { // This should never happen
     Serial.println("Unrecognised LED state");
     return;
   }
 
+  // Increment or reset counter as appropriate
+  if(j == 255){
+    j = 0;
+  }else{
+    j++;
+  }
+
+  // Wait 1000 ms before looping again, so the lamp colour doesn't change too quickly
   delay(1000);
   
 }
 
-// Build webpage with correct colour for colour picker
+// Build webpage showing last selected colour for colour picker and current lamp mode
 String buildWebpage(String hexColour, char* lampMode){
   String webPage = "";
   webPage += "<!DOCTYPE html>\
@@ -182,14 +179,6 @@ String buildWebpage(String hexColour, char* lampMode){
     </body>\
   </html>";
   return webPage;
-}
-
-// Turn LEDs off
-void LEDs_off(){
-  for(uint16_t i=0; i<ring.numPixels(); i++){
-    ring.setPixelColor(i, ring.Color(0, 0, 0));
-  }
-  ring.show();  
 }
 
 // Input a value 0 to 255 to get a color value.
